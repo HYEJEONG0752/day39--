@@ -1,6 +1,6 @@
 const express = require('express');
 const session = require('express-session');
-const bodyParser = require('bpdy-parser');
+const bodyParser = require('body-parser');
 const path = require('path');
 
 const loggerMiddleware = require('./middleware/loggerMiddleware');
