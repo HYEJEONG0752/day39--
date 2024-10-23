@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "username": "마루마루",
+    "password": "$2a$10$ySZ27E5b.dsnFue2iToyzusWiqF1VZToVMzUTEhY70OgFvQ5XnKIO"
+  },
+  {
+    "username": "토리토리",
+    "password": "$2a$10$QjQyPxE.UrlO/FhSbRIzLeiqfNgJmV7/B0/hjwT2e4OZo8mC/rnxC"
+  }
+]

@@ -27,7 +27,7 @@ function saveUsers(users) {
 
 // 회원가입 폼
 router.get('/register', (req, res) => {
-    res.render('register');
+    res.render('register', { user: req.session.username || null });
 });
 
 // 회원 가입 처리
@@ -49,7 +49,7 @@ router.post('/register', async (req, res) => {
 
 // 로그인 폼
 router.get('/login', (req, res) => {
-    res.render('login');
+    res.render('login', { user: req.session.user || null });
 });
 
 // 로그인 처리
@@ -72,7 +72,7 @@ router.post('/login', async (req, res) => {
 });
 
 // 로그아웃
-route.get('/logout', (req, res) => {
+router.get('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
             return res.send('로그아웃 중 오류가 발생했습니다.');

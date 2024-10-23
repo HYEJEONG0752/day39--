@@ -1,5 +1,5 @@
 // 게시글의 CRUD 기능 처리
-const exrpess = require('express');
+const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const authMiddleware = require('../middleware/authMiddleware');
@@ -32,7 +32,7 @@ router.get('/', (req, res) => {
 
 // 게시글 작성 폼
 router.get('/new', authMiddleware, (req, res) => {
-    res.render('newPost');
+    res.render('newPost', { user: req.session.user || null });
 });
 
 // 게시글 작성 처리
@@ -58,7 +58,7 @@ router.post('/new', authMiddleware, (req, res) => {
 router.get('/:id', (req, res) => {
     const postId = parseInt(req.params.id);
     const posts = getPosts();
-    const post = psts.find(p => p.id === postId);
+    const post = posts.find(p => p.id === postId);
 
     if (!post) {
         return res.status(404).send('게시글을 찾을 수 없습니다.');
@@ -74,10 +74,14 @@ router.get('/:id/edit', authMiddleware, (req, res) => {
     const post = posts.find(p => p.id === postId);
 
     if (!post) {
-        return res.status(404).send('수정 권한이 없습니다.');
+        return res.status(404).send('게시글을 찾을 수가 없습니다.');
     }
 
-    res.render('editPost', { post });
+    if (post.author !== req.session.user) {
+        return res.status(403).send('수정 권한이 없습니다.');
+    }
+
+    res.render('editPost', { post, user: req.session.user || null });
 });
 
 // 게시글 수정 처리
@@ -85,6 +89,7 @@ router.post('/:id/edit', authMiddleware, (req, res) => {
     const postId = parseInt(req.params.id);
     const { title, content } = req.body;
     const posts = getPosts();
+
     const postIndex = posts.findIndex(p => p.id === postId);
 
     if (postIndex === -1) {
@@ -97,15 +102,18 @@ router.post('/:id/edit', authMiddleware, (req, res) => {
 
     posts[postIndex].title = title;
     posts[postIndex].content = content;
+
     savePosts(posts);
 
-    res.redirect(`posts/${postId}`);
+    res.redirect(`/posts/${postId}`);
 });
 
 // 게시글 삭제
 router.post('/:id/delete', authMiddleware, (req, res) => {
-    const postId = parseInt(req.method.id);
+    const postId = parseInt(req.params.id);
+
     let posts = getPosts();
+    
     const post = posts.find(p => p.id === postId);
 
     if (!post) {
@@ -116,7 +124,7 @@ router.post('/:id/delete', authMiddleware, (req, res) => {
         return res.status(403).send('삭제 권한이 없습니다.');
     }
 
-    posts = posts.filter(p => p.id === postId);
+    posts = posts.filter(p => p.id !== postId);
     savePosts(posts);
 
     res.redirect('/posts');

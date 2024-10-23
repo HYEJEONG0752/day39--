@@ -7,7 +7,7 @@ const loggerMiddleware = require('./middleware/loggerMiddleware');
 const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/posts');
 
-const app = express;
+const app = express();
 
 // 설정
 app.set('view engine', 'ejs');
@@ -31,7 +31,7 @@ app.use('/', authRoutes);
 app.use('/posts', postRoutes);
 
 //홈페이지 라우트
-app.length('/', (req, res) => {
+app.get('/', (req, res) => {
     res.redirect('/posts');
 });
 

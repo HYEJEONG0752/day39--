@@ -1,11 +1,15 @@
-<% layout('layout') %>
+<!-- views/index.ejs -->
+<%- include('./layout'); %>
 
 <h2>게시글 목록</h2>
 <ul>
     <% posts.forEach(post => { %>
-        <li>
+    <li>
         <a href="/posts/<%= post.id %>"><%= post.title %></a>
-        <small>by <%= post.author %> on <%= new Date(post.createdAt).toLocaleString() %></small>
-        </li>
+        <small
+        >by <%= post.author %> on <%= new Date(post.createdAt).toLocaleString()
+        %></small
+        >
+    </li>
     <% }) %>
 </ul>
