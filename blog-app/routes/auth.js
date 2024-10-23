@@ -72,7 +72,7 @@ router.post('/login', async (req, res) => {
 });
 
 // 로그아웃
-routwe.get('/logout', (req, res) => {
+route.get('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
             return res.send('로그아웃 중 오류가 발생했습니다.');
